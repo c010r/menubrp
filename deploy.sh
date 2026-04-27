@@ -205,9 +205,10 @@ python manage.py createsuperuser \
     --noinput \
     --settings=config.settings_prod 2>/dev/null || warn "Superusuario ya existe"
 
+mkdir -p "$APP_DIR/media" "$APP_DIR/staticfiles"
 chown -R www-data:www-data "$APP_DIR"
 chmod -R 755 "$APP_DIR"
-chmod -R 755 "$APP_DIR/media"
+chmod -R 775 "$APP_DIR/media"
 info "Django configurado ✓"
 
 section "7/9 - Configurando Gunicorn (systemd service)"
