@@ -14,7 +14,8 @@ APP_NAME="menubrp"
 DOMAIN="menu.backyardbar.fun"
 REPO_URL="https://github.com/c010r/menubrp.git"
 APP_DIR="/var/www/$APP_NAME"
-PYTHON_VERSION="python3.11"
+# Se detecta automáticamente (ver sección 1)
+PYTHON_VERSION=""
 
 DB_NAME="menubrp_db"
 DB_USER="menubrp_user"
@@ -47,13 +48,39 @@ fi
 
 section "1/9 - Actualizando sistema"
 apt-get update -y && apt-get upgrade -y
+
+# Instalar dependencias base (sin Python específico)
 apt-get install -y \
-    python3.11 python3.11-venv python3.11-dev python3-pip \
+    software-properties-common \
     postgresql postgresql-contrib libpq-dev \
     nginx certbot python3-certbot-nginx \
     git curl build-essential \
     libssl-dev libffi-dev \
-    libjpeg-dev zlib1g-dev   # Para Pillow (imágenes)
+    libjpeg-dev zlib1g-dev
+
+# ── Detectar / instalar Python 3.x disponible ──
+info "Detectando versión de Python disponible..."
+for VER in python3.12 python3.11 python3.10 python3; do
+    if command -v $VER &>/dev/null; then
+        PYTHON_VERSION=$VER
+        break
+    fi
+done
+
+# Si ninguna versión tiene venv, intentar instalar 3.11 vía deadsnakes
+if ! $PYTHON_VERSION -m venv --help &>/dev/null 2>&1; then
+    warn "Python venv no disponible. Instalando Python 3.11 desde deadsnakes PPA..."
+    add-apt-repository -y ppa:deadsnakes/ppa
+    apt-get update -y
+    apt-get install -y python3.11 python3.11-venv python3.11-dev
+    PYTHON_VERSION=python3.11
+fi
+
+# Instalar pip y venv para la versión detectada
+PYVER_SHORT=$(echo $PYTHON_VERSION | tr -d 'python')
+apt-get install -y python3-pip "${PYTHON_VERSION}-venv" "${PYTHON_VERSION}-dev" 2>/dev/null || true
+
+info "Usando: $PYTHON_VERSION ($($PYTHON_VERSION --version)) ✓"
 info "Sistema actualizado ✓"
 
 section "2/9 - Configurando PostgreSQL"
