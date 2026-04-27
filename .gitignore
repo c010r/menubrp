@@ -1,0 +1,31 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+media/
+
+# Python
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.env
+.env
+local_settings.py

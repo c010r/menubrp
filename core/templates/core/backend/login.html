@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="glass-card p-5 w-100" style="max-width: 400px;">
+        <h2 class="text-center mb-4 fw-bold">ACCESO BACKEND</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-warning w-100 fw-bold py-2 mt-3">ENTRAR</button>
+        </form>
+        <div class="text-center mt-4">
+            <a href="{% url 'menu' %}" class="text-muted small text-decoration-none">← Volver al Menú</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    input {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        border-radius: 10px !important;
+        padding: 10px !important;
+    }
+    input:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: none !important;
+    }
+</style>
+{% endblock %}

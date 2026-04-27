@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<nav class="category-nav mb-5">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h2 class="h4 mb-0 fw-bold">Gestionar {{ title }}</h2>
+        <a href="{% url 'backend_dashboard' %}" class="btn btn-outline-light btn-sm">Volver</a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="glass-card p-5 mx-auto" style="max-width: 600px;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-4">
+                <label class="form-label fw-bold">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                {% endif %}
+                {% if field.errors %}
+                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div class="d-flex gap-2 mt-5">
+                <button type="submit" class="btn btn-warning px-4 fw-bold">GUARDAR</button>
+                <a href="{% url 'backend_dashboard' %}" class="btn btn-outline-secondary px-4">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        padding: 12px;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        border-radius: 10px;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.2) !important;
+    }
+    .form-check-input {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    .form-check-input:checked {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+    }
+</style>
+{% endblock %}
