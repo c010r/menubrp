@@ -101,6 +101,9 @@ sudo -u postgres psql -d "$DB_NAME" -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USE
 info "PostgreSQL configurado ✓"
 
 section "3/9 - Clonando repositorio"
+# Necesario cuando se corre como root (git 2.35.2+)
+git config --global --add safe.directory "$APP_DIR"
+
 if [ -d "$APP_DIR" ]; then
     warn "Directorio ya existe. Actualizando código..."
     cd "$APP_DIR" && git pull origin main
