@@ -105,8 +105,10 @@ section "3/9 - Clonando repositorio"
 git config --global --add safe.directory "$APP_DIR"
 
 if [ -d "$APP_DIR" ]; then
-    warn "Directorio ya existe. Actualizando código..."
-    cd "$APP_DIR" && git pull origin main
+    warn "Directorio ya existe. Forzando actualización desde remote..."
+    cd "$APP_DIR"
+    git fetch origin main
+    git reset --hard origin/main
 else
     git clone "$REPO_URL" "$APP_DIR"
 fi
