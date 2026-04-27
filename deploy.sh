@@ -107,6 +107,7 @@ git config --global --add safe.directory "$APP_DIR"
 if [ -d "$APP_DIR" ]; then
     warn "Directorio ya existe. Forzando actualización desde remote..."
     cd "$APP_DIR"
+    git stash 2>/dev/null || true
     git fetch origin main
     git reset --hard origin/main
 else
